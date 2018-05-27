@@ -26,6 +26,7 @@ GO_FILES=$(shell find . -type f -name "*.go" -not -path "./pkg/*")
 
 release: windows linux darwin
 
+# support multi platform
 $(PLATFORMS):
 	mkdir -p release/$(VERSION)
 	GOOS=$(os) GOARC=amd64 $(GOBUILD) $(LDFLAGS) -o release/$(VERSION)/$(BINARY)-$(VERSION)-$(OS)-amd64
