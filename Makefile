@@ -27,8 +27,8 @@ GO_FILES=$(shell find . -type f -name "*.go" -not -path "./pkg/*")
 release: windows linux darwin
 
 $(PLATFORMS):
-	mkdir -p release
-	GOOS=$(os) GOARC=amd64 $(GOBUILD) $(LDFLAGS) -o release/$(BINARY)-$(VERSION)-$(OS)-amd64
+	mkdir -p release/$(VERSION)
+	GOOS=$(os) GOARC=amd64 $(GOBUILD) $(LDFLAGS) -o release/$(VERSION)/$(BINARY)-$(VERSION)-$(OS)-amd64
 
 gentest:
 	gotests -all -excl main -w $(GO_FILES)
