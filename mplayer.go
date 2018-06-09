@@ -46,14 +46,16 @@ func handleMenuCmd(tokens []string) {
 			Source: tokens[4],
 			Type:   tokens[5],
 		})
+		m.List()
 	case "remove":
-		fi := m.FindIndex(tokens[1])
+		fi := m.FindIndex(tokens[2])
 		if fi != -1 {
 			rm := m.Remove(fi)
 			fmt.Printf("%s removed success\n", rm)
 		} else {
-			fmt.Printf("%s does not exist\n", tokens[1])
+			fmt.Printf("%s does not exist\n", tokens[2])
 		}
+		m.List()
 	default:
 		fmt.Println("operation not support")
 	}

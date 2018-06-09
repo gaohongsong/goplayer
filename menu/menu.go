@@ -15,7 +15,7 @@ type MusicEntry struct {
 }
 
 func (m *MusicEntry) String() string {
-	return fmt.Sprintf("%s|%s|%s|%s|%s", m.Id, m.Name, m.Artist, m.Type, m.Source)
+	return fmt.Sprintf("[%s]: %s | %s | %s | %s", m.Id, m.Name, m.Artist, m.Type, m.Source)
 }
 
 // MusicManager define music player manager
@@ -57,8 +57,10 @@ func (m *MusicManager) Add(music *MusicEntry) {
 
 func (m *MusicManager) Remove(index int) *MusicEntry {
 	music, err := m.Get(index)
-	if err != nil {
+	if err == nil {
 		m.musics = append(m.musics[:index], m.musics[index+1:]...)
+	}else{
+		fmt.Printf("remove %v failed: %v", index, err)
 	}
 
 	return music
@@ -75,7 +77,10 @@ func (m *MusicManager) FindIndex(name string) int {
 }
 
 func (m *MusicManager) List() {
-	for _, v := range m.musics {
-		fmt.Printf("[%s]: %s|%s|%s|%s\n", v.Id, v.Name, v.Artist, v.Type, v.Source)
+	for i := 0; i < m.Len(); i++ {
+		if me, err := m.Get(i); err == nil {
+			fmt.Println(me)
+		}
+
 	}
 }

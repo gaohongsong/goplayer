@@ -10,10 +10,13 @@ func Play(source, mtype string) {
 	var p Player
 
 	switch mtype {
-	case "MP3":
+	case "mp3":
 		p = &MP3Player{}
+	case "wav":
+		p = &WAVPlayer{}
 	default:
 		fmt.Println("Unspported music type ", mtype)
+		return
 	}
 
 	p.Play(source)
