@@ -60,5 +60,6 @@ check:
 clean:
 	$(GOCLEAN)
 	rm -rf release
+	rm -rf *.out
 
 .PHONY: release $(PLATFORMS)
