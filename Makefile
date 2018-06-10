@@ -30,7 +30,12 @@ release: windows linux darwin
 # support multi platform
 $(PLATFORMS):
 	mkdir -p release/$(VERSION)
-	GOOS=$(os) GOARC=amd64 $(GOBUILD) $(LDFLAGS) -o release/$(VERSION)/$(BINARY)-$(VERSION)-$(OS)-amd64
+	GOOS=$(OS) GOARC=amd64 $(GOBUILD) $(LDFLAGS) -o release/$(VERSION)/$(BINARY)-$(VERSION)-$(OS)-amd64
+
+package:
+	rm -rf release_$(VERSION).tar.gz
+	tar -zcvf release_$(VERSION).tar.gz release
+	@echo "create release_$(VERSION).tar.gz successfully"
 
 .PHONY:gotest
 gentest:
@@ -39,7 +44,8 @@ gentest:
 .PHONY:test
 test:
 	rm -rf cover.out
-	$(GOTEST) -v -cover=true -coverprofile=cover.out ./...
+	#$(GOTEST) -v -cover=true -coverprofile=cover.out ./...
+	$(GOTEST) -v -cover=true --covermode=count -coverprofile=cover.out ./...
 
 .PHONY:cover
 cover:test
