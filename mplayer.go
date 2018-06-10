@@ -62,7 +62,7 @@ func handleMenuCmd(tokens []string) {
 }
 
 func main() {
-	fmt.Println(`Enter following commands to control player:
+	fmt.Print(`Enter following commands to control player:
 menu list -- view all musics in menu
 menu add <name><artist><source><type> -- add a music to the menu
 menu remove <name> -- remove a music from menu

@@ -11,6 +11,7 @@ GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
+GOTOOL=$(GOCMD) tool
 GOFMT=gofmt
 
 # go build flags
@@ -31,20 +32,31 @@ $(PLATFORMS):
 	mkdir -p release/$(VERSION)
 	GOOS=$(os) GOARC=amd64 $(GOBUILD) $(LDFLAGS) -o release/$(VERSION)/$(BINARY)-$(VERSION)-$(OS)-amd64
 
+.PHONY:gotest
 gentest:
 	gotests -all -excl main -w $(GO_FILES)
 
+.PHONY:test
 test:
-	$(GOTEST) -v -cover=true ./...
+	rm -rf cover.out
+	$(GOTEST) -v -cover=true -coverprofile=cover.out ./...
 
+.PHONY:cover
+cover:test
+	$(GOTOOL) cover -func=cover.out
+	#$(GOTOOL) cover -html=cover.out
+
+.PHONY:fmt
 fmt:
 	$(GOFMT) -l -w $(GO_FILES)
 
+.PHONY:check
 check:
 	@test -z $(shell gofmt -l $(GO_FILES) | tee /dev/stderr) || echo "[WARN] Fix formatting issues with 'make fmt'"
 	@for d in $$(go list ./... | grep -v /vendor/); do golint $${d}; done
 	@go tool vet ${GO_FILES}
 
+.PHONY:clean
 clean:
 	$(GOCLEAN)
 	rm -rf release
